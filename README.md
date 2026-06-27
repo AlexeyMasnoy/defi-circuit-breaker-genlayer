@@ -97,6 +97,12 @@ Deployed and tested on GenLayer Studio (studionet, GenVM v0.2.16). News analysis
 
 ---
 
+## On-Chain Verification
+
+- **Contract Address:** `0xc7A3E7d5Cad047395d13a47654A058aD6d613039`
+- **Success Tx Hash:** `0xe9b4f6f5ee97d046c7beecb5cd0787c443b161bfd5ae795d0606f5ccb2e2d0e2`
+- **Consensus Result:** `MAJORITY_AGREE` (Verified on GenVM v0.2.16)
+
 ## License
 
 MIT — see [LICENSE](./LICENSE)
