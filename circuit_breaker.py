@@ -7,38 +7,38 @@ import typing
 
 class DeFiCircuitBreaker(gl.Contract):
     is_paused: bool
-    last_analysis_reason: str
 
     def __init__(self):
         self.is_paused = False
-        self.last_analysis_reason = "Initialized"
-
-    @gl.public.view
-    def get_status(self) -> bool:
-        return self.is_paused
 
     @gl.public.write
     def run_health_check(self, token: str, news_data: str) -> typing.Any:
         
         def analyze_news() -> typing.Any:
+            # Жесткий промпт, исключающий вариативность
             task = f"""
-            Analyze the following news about {token}:
-            {news_data}
-            
-            Return JSON only: {{"status": "DANGER" or "SAFE", "reason": "..."}}
+            Analyze the following text regarding {token}: "{news_data}".
+            If it contains any hint of danger, hack, or exploit, return exactly: {{"status": "DANGER"}}
+            Otherwise, return exactly: {{"status": "SAFE"}}
+            Output only the JSON object. Do not add any extra fields, explanations, or markdown.
             """
             
-            result = gl.nondet.exec_prompt(task).replace("```json", "").replace("```", "")
+            # Исполнение и первичная очистка
+            result = gl.nondet.exec_prompt(task).strip()
+            result = result.replace("```json", "").replace("```", "").strip()
+            
             return json.loads(result)
 
-        # Используем strict_eq для консенсуса по анализу
+        # Применение консенсуса к бинарному результату
         result_json = gl.eq_principle.strict_eq(analyze_news)
 
-        if result_json["status"] == "DANGER":
-            self.is_paused = True
-            self.last_analysis_reason = result_json["reason"]
-        else:
-            self.is_paused = False
-            self.last_analysis_reason = "Safe"
-
+        # Обновление состояния
+        self.is_paused = (result_json["status"] == "DANGER")
+        
         return result_json
+
+    @gl.public.view
+    def get_status(self) -> dict[str, typing.Any]:
+        return {
+            "is_paused": self.is_paused
+        }
