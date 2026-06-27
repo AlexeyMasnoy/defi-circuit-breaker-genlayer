@@ -73,6 +73,8 @@ genlayer-defi-circuit-breaker/
 
 ## Quick Test
 
+
+```
 run_health_check(
 token="ETH",
 news_data="Critical security vulnerability discovered in ETH bridge, funds at risk."
@@ -80,6 +82,8 @@ news_data="Critical security vulnerability discovered in ETH bridge, funds at ri
 
 Check if the circuit breaker was triggered
 get_status()
+
+```
 
 ## Consensus Safety
 
