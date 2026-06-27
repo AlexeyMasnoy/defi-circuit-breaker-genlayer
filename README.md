@@ -65,7 +65,7 @@ genlayer-defi-circuit-breaker/
 ## Deploying
 
 1. Open [studio.genlayer.com](https://studio.genlayer.com)
-2. Paste `contracts/circuit_breaker.py` into the editor
+2. Paste `circuit_breaker.py` into the editor
 3. Click **Deploy new instance**
 4. Wait for FINALIZED
 
